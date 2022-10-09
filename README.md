@@ -1,5 +1,7 @@
-Streaming-Media-Server-Pro
+[Streaming-Media-Server-Pro](https://github.com/239144498/Streaming-Media-Server-Pro)
 -------------
+[![builds](https://github.com/239144498/Streaming-Media-Server-Pro/actions/workflows/docker-image.yml/badge.svg)](https://github.com/239144498/Streaming-Media-Server-Pro/actions/workflows/docker-image.yml)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/31776721-e836-4042-a22a-3afe29ff1824/deploy-status)](https://app.netlify.com/sites/nowtv/deploys)  
 
 &emsp;&emsp;在互联网快速发展的今天，有成千上万个用户都有观看电视的需求，而我，
 想打造一个让每个人都拥有自己的电视频道的目标，每个人都可以根据自己的喜欢去筛选喜欢的节目，
@@ -7,11 +9,56 @@ Streaming-Media-Server-Pro
 
 -------------
 
-## ==**新版本已发布，增加了自定义添加频道功能，你想看的都可以放进来；程序稳定性更高，只需要修改config.ini配置参数即可运行；你们期待的教程重磅来袭！**==
+### **接口中所有频道已恢复正常！**
 
+### **&emsp;&emsp;最新版本已发布，增加了自定义添加频道功能，程序稳定性更高！现在可以一键部署，你们期待的教程重磅来袭！**  
+
+**项目树形图**
+```
+.
+|-- app
+|   |-- __init__.py
+|   |-- assets
+|   |   |-- EPG.xml
+|   |   |-- config.ini
+|   |   `-- diyepg.txt
+|   |-- common
+|   |   |-- __init__.py
+|   |   |-- diyEpg.py
+|   |   |-- endecrypt.py
+|   |   |-- generateEpg.py
+|   |   |-- gitrepo.py
+|   |   `-- tools.py
+|   |-- modules
+|   |   |-- DBtools.py
+|   |   |-- __init__.py
+|   |   |-- dbMysql.py
+|   |   `-- dbPostgresql.py
+|   |-- main.py
+|   |-- routers.py
+|   |-- settings.py
+|   `-- utile.py
+|-- main.py
+|-- requirements.txt
+|-- Dockerfile
+|-- LICENSE
+|-- Procfile
+`-- README.md
+```
+
+### 自制视频网站
+
+后端对接的项目接口，可以在线观看接口内的所有电视。
+
+https://player.naihe.cf  
+
+![](https://ik.imagekit.io/naihe/enshan/img2.png)  
+
+![](https://ik.imagekit.io/naihe/enshan/img1.png)  
 
 核心功能
 ---
+
 - 生成m3u文件
 - 生成m3u8文件
 - 视频中转（具有缓冲区）
@@ -21,14 +68,16 @@ Streaming-Media-Server-Pro
 - 分布式处理ts片段
 - Redis缓存参数
 - MySql或PostgreSql缓存视频
-- 多服务器分流
+- 正向代理请求
 - 自定义增加节目频道
+- 自定义电视台标
 - 清晰度可自定义
-- 请求主机可自定义（作为反代和分流）
+- 反向代理或套CDN请求（负载均衡）
 
-REST API
+REST API 接口指南
 ---
-[https://www.apifox.cn/apidoc/shared-95689a43-31f7-4ef2-952a-cecff34105f2/api-35577145](https://www.apifox.cn/apidoc/shared-95689a43-31f7-4ef2-952a-cecff34105f2/api-35577145)
+[https://stream.naihe.cf/docs](https://stream.naihe.cf/docs)  
+<img src="https://ik.imagekit.io/naihe/github/apilist.png" title="api列表"/>
 
 实现效果：
 ---
@@ -65,34 +114,8 @@ REST API
 
 使用方式
 ---
-#### Mysql操作
-##### 创建数据库
-``` 
-CREATE DATABASE media
-``` 
-##### 创建video表
-``` 
-create table media.video(
-    vname varchar(30) not null,
-    CONSTRAINT video_pk PRIMARY KEY (vname),
-    vcontent  MEDIUMBLOB NOT NULL,
-    vsize varchar(20) NULL,
-    ctime  timestamp(0) default now()
-);
-``` 
-##### CIL执行，设置定时事件
-``` 
-SET GLOBAL event_scheduler = ON;
-
-use video;
-
-DROP event IF EXISTS auto_delete;
-CREATE EVENT auto_delete
-ON SCHEDULE EVERY 30 minute     # xx分钟根据数据库的存储和查询性能综合决定
-DO
-TRUNCATE video;
-``` 
-#### python部署:  
+#### python部署: 
+python版本推荐3.9+
 ``` code
 git clone https://github.com/239144498/Streaming-Media-Server-Pro.git
 ```
@@ -104,6 +127,9 @@ pip install -r requirements.txt
 ``` code
 python3 main.py
 ```
+
+**（docker部署）进阶使用教程详情 https://www.cnblogs.com/1314h/p/16651157.html**
+
 现已支持频道
 ---
 - [x] 民视第一台
@@ -226,16 +252,13 @@ python3 main.py
 - [x] 精选动漫台
 - [x] 华语戏剧台
 - [x] 华语综艺台
+- [x] 在diychannel.txt文件添加更多频道
 
-License
----
-Released under the MIT license.
+<h3 dir="auto">📋 打赏名单 Donation List</h3>
 
-Copyright, 2022, by naihe,239144498@qq.com .
+非常感谢「 [这些用户](https://github.com/239144498/Streaming-Media-Server-Pro/wiki/Donation-List) 」对本项目的赞助支持！
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
+<h3 dir="auto">❤ 打赏 Donation</h3>
+<p dir="auto">&emsp;&emsp;如果你觉得本项目对你有帮助，请考虑打赏本项目，以激励我投入更多的时间进行维护与开发。 If you find this project helpful, please consider supporting the project going forward. Your support is greatly appreciated.</p>
+<p  style="text-align: center;"><img src="https://ik.imagekit.io/naihe/pay/zsm.png" width="384px" height="384px" /></p>
+<p><strong>&emsp;&emsp;你在GitHub给的<code>star</code>或者<code>赞助</code>是我长期维护此项目的动力所在，由衷感谢每一位支持者，&ldquo;每一次你花的钱都是在为你想要的世界投票&rdquo;。 另外，将本项目推荐给更多的人，也是一种支持的方式，用的人越多更新的动力越足。</strong></p>
