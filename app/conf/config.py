@@ -125,7 +125,7 @@ gdata = eval(request.get("https://raw.githubusercontent.com/382420058/owner/main
                          headers={
                              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0"}).content)
 print(".", end="")
-edata = eval(request.get("https://raw.githubusercontent.com/382420058/owner/main/data4",
+edata = eval(request.get("https://raw.githubusercontent.com/382420058/owner/main/data2",
                          headers={
                              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0"}).content)
 print(".", end="")
